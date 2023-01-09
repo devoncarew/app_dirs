@@ -2,7 +2,7 @@ name: directories
 description: >
   A library to locate common directories using platform-specific conventions.
 version: 0.1.0
-# repository: https://github.com/my_org/my_repo
+repository: https://github.com/devoncarew/directories
 
 environment:
   sdk: '>=2.17.0 <3.0.0'
