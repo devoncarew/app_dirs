@@ -1,4 +1,4 @@
-@TestOn('!windows')
+@TestOn('linux')
 
 import 'dart:io' as io;
 
