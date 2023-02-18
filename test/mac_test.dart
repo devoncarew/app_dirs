@@ -1,4 +1,4 @@
-@TestOn('!windows')
+@TestOn('mac-os')
 
 import 'package:directories/directories.dart';
 import 'package:test/test.dart';

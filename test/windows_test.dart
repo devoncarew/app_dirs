@@ -1,3 +1,5 @@
+@TestOn('windows')
+
 import 'dart:io' as io;
 
 import 'package:directories/directories.dart';
