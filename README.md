@@ -4,6 +4,12 @@ A library to locate common directories using platform-specific conventions.
 
 ## What's this?
 
+This library follows platform-specific conventions to locate common directories.
+For example, the correct directory to use for application configuration files
+might be `$HOME/.config/my-app` on Linux,
+`$HOME/Library/Application Support/My App` on Macos, and
+`%APPDATA%\My App\config` on Windows.
+
 To use:
 
 ```dart
@@ -62,8 +68,8 @@ and elsewhere).
 ## BaseDirs values
 
 This is the table of directories returned for `Directories.baseDirs`.
-`AppDirs` - the recommended API for people to use - builts on top of this using
-information about the application name, qualifier (`org`, `com`, ...) and
+`AppDirs` - the recommended API for people to use - builds on top of this using
+information like the application name, qualifier (`org`, `com`, ...) and
 organization name.
 
 | Property   | Linux                                     | Mac                                 | Windows |
@@ -73,12 +79,12 @@ organization name.
 | config     | `$XDG_CONFIG_HOME` or `$HOME/.config`     | `$HOME/Library/Application Support` | `%APPDATA%` |
 | data       | `$XDG_DATA_HOME` or `$HOME/.local/share`  | `$HOME/Library/Application Support` | `%APPDATA%` |
 | dataLocal  | see data                                  | see data                            | `%LOCALAPPDATA%` |
-| preference | see config                                | `$HOME/Library/Preferences`         | see data |
+| preference | see config                                | `$HOME/Library/Preferences`         | see config |
 | state      | `$XDG_STATE_HOME` or `$HOME/.local/state` | `null`                              | `null` |
 
 ## Useful references
 
-Specifications and documentations:
+Specifications and documentation:
 - https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
 - [developer.apple.com/library/archive/documentation/FileManagement](https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html)
 - https://pureinfotech.com/list-environment-variables-windows-10/
