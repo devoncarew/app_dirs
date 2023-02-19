@@ -1,4 +1,4 @@
-name: package:directories
+name: package:app_dirs
 permissions: read-all
 
 on:

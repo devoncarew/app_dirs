@@ -1,4 +1,4 @@
-[![package:directories](https://github.com/devoncarew/directories/actions/workflows/dart.yaml/badge.svg)](https://github.com/devoncarew/directories/actions/workflows/dart.yaml)
+[![package:app_dirs](https://github.com/devoncarew/directories/actions/workflows/dart.yaml/badge.svg)](https://github.com/devoncarew/directories/actions/workflows/dart.yaml)
 
 A library to locate common directories using platform-specific conventions.
 
@@ -13,7 +13,7 @@ might be `$HOME/.config/my-app` on Linux,
 To use:
 
 ```dart
-var appDirs = Directories().appDirs(application: 'FooBar App');
+var appDirs = getAppDirs(application: 'FooBar App');
 
 // Use this directory for general application configuration files.
 var configDir = appDirs.config;
@@ -24,7 +24,7 @@ var cacheDir = appDirs.cache;
 ...
 ```
 
-See also our [API docs](doc/directories.md).
+See also our [API docs](doc/app_dirs.md).
 
 ## Mac usage
 
@@ -41,7 +41,7 @@ API clients can opt into a separate set of file location convetions for Macos.
 This is done via the `preferUnixConventions` flag:
 
 ```dart
-var appDirs = Directories().appDirs(
+var appDirs = getAppDirs(
   application: 'FooBar App',
   preferUnixConventions: true,
 );

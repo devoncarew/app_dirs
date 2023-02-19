@@ -6,7 +6,7 @@
 
 import 'dart:io' as io;
 
-import 'package:directories/directories.dart';
+import 'package:app_dirs/app_dirs.dart';
 import 'package:test/test.dart';
 
 String get home => io.Platform.environment['HOME']!;

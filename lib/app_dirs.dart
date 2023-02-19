@@ -7,7 +7,7 @@
 /// To use:
 ///
 /// ```
-/// var appDirs = Directories().appDirs(application: 'FooBar App');
+/// var appDirs = getAppDirs(application: 'FooBar App');
 /// var configDir = appDirs.config;
 /// ...
 /// ```
@@ -21,7 +21,37 @@ import 'src/windows.dart';
 
 export 'src/common.dart' show BaseDirs, AppDirs, OperatingSystem;
 
-/// The main entry-point to `package:directories`.
+/// Returns the directory locations for the current platform's conventions,
+/// factoring in information like the application name.
+///
+/// The [application], [qualifier] and [organization] information is used to
+/// construct the correct app path. For instance, in Unix that path might be
+/// `'foobar-app'`, on Windows `'Baz Corp/Foo Bar App'` and on MacOS
+/// `'org.Baz-Corp.Foo-Bar-App'`.
+///
+/// The [preferUnixConventions] param is used to configure the MacOS directory
+/// conventions used. This library defaults to the standard Mac conventions -
+/// an app's config directory may look something like
+/// `~/Library/Application support/org.Baz-Corp.Foo-Bar-App`. However, for some
+/// apps - like command-line tools - a Unix convention may be more familiar to
+/// users. Specify `preferUnixConventions: true` to use thos conventions
+/// instead (the above path may then look something like
+/// `~/.config/foobar-app`).
+AppDirs getAppDirs({
+  String? qualifier,
+  String? organization,
+  required String application,
+  bool preferUnixConventions = false,
+}) {
+  return Directories().appDirs(
+    qualifier: qualifier,
+    organization: organization,
+    application: application,
+    preferUnixConventions: preferUnixConventions,
+  );
+}
+
+/// The main entry-point to `package:app_dirs`.
 ///
 /// Most callers will use [appDirs]; this returns the correct platform
 /// directories to use given your application metadata.
@@ -65,8 +95,8 @@ class Directories {
     }
   }
 
-  /// The directory locations for the current platform's conventions. This
-  /// factors in information like the application and (optionally) company name.
+  /// Returns the directory locations for the current platform's conventions,
+  /// factoring in information like the application name.
   ///
   /// The [application], [qualifier] and [organization] information is used to
   /// construct the correct app path. For instance, in Unix that path might be
