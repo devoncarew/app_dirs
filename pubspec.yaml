@@ -2,7 +2,7 @@ name: app_dirs
 description: >-
   A library to locate common directories using platform-specific conventions.
 version: 0.1.0
-repository: https://github.com/devoncarew/directories
+repository: https://github.com/devoncarew/app_dirs
 
 environment:
   sdk: '>=2.17.0 <3.0.0'

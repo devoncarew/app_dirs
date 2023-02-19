@@ -1,4 +1,4 @@
-[![package:app_dirs](https://github.com/devoncarew/directories/actions/workflows/dart.yaml/badge.svg)](https://github.com/devoncarew/directories/actions/workflows/dart.yaml)
+[![package:app_dirs](https://github.com/devoncarew/app_dirs/actions/workflows/dart.yaml/badge.svg)](https://github.com/devoncarew/app_dirs/actions/workflows/dart.yaml)
 
 A library to locate common directories using platform-specific conventions.
 
