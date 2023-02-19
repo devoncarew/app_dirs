@@ -1,4 +1,16 @@
-// todo: library docs
+// Copyright (c) 2023, Devon Carew.  Please see the AUTHORS file for details.
+// All rights reserved. Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+/// A library to locate common directories using platform-specific conventions.
+///
+/// To use:
+///
+/// ```
+/// var appDirs = Directories().appDirs(application: 'FooBar App');
+/// var cacheDir = appDirs.cache;
+/// var configDir = appDirs.config;
+/// ```
 
 import 'dart:io' as io;
 
@@ -9,17 +21,14 @@ import 'src/windows.dart';
 
 export 'src/common.dart' show BaseDirs, AppDirs, OperatingSystem;
 
-// https://pureinfotech.com/list-environment-variables-windows-10/
-
-// https://github.com/dirs-dev/directories-rs
-
-// https://github.com/dirs-dev/directories-jvm
-
-// https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
-
-// https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html
-
-/// todo: doc including base and getAppDirs
+/// The main entry-point to `package:directories`.
+///
+/// Most callers will use [appDirs]; this returns the correct platform
+/// directories to use given your application metadata.
+///
+/// [baseDirs] returns the base directories for the current platform. These are
+/// the standard directories for the platform's conventions, but without taking
+/// into account things like the application name.
 class Directories {
   /// The base directories for the current platform. These are the standard
   /// directories for the platform's conventions, but without taking into
@@ -29,7 +38,7 @@ class Directories {
   /// locate directories. That will take in account things like the application
   /// and organization name, and will locate directories using the platform's
   /// conventions.
-  late BaseDirs baseDirs;
+  late final BaseDirs baseDirs;
 
   late final Map<String, String> _env;
   late final OperatingSystem _os;

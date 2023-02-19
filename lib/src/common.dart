@@ -1,3 +1,7 @@
+// Copyright (c) 2023, Devon Carew.  Please see the AUTHORS file for details.
+// All rights reserved. Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 import 'dart:io' as io;
 
 /// The operating system to assume for directory conventions; passed as a param
@@ -25,28 +29,38 @@ enum OperatingSystem {
 /// things like the application name.
 ///
 /// For directory locations that take application name into account, see
-/// [Directories.getAppDirectories] and [AppDirs].
+/// [Directories.appDirs] and [AppDirs].
 abstract class BaseDirs {
   /// The user's home directory. On Unix like systems, this will be `$HOME`. On
   /// Windows, this will be `$USERPROFILE`.
   String get home;
 
-  /// todo: doc
+  /// The directory relative to which user-specific non-essential data files
+  /// should be stored.
   String get cache;
 
-  /// todo: doc
+  /// The directory for user-specific configuration files.
   String get config;
 
-  /// todo: doc
+  /// The directory for user-specific data files.
   String get data;
 
-  /// todo: doc
+  /// The directory for local, user-specific data files.
+  ///
+  /// On Windows, this will return `%LOCALAPPDATA%` (vs. `%APPDATA%` for
+  /// [data]).
   String get dataLocal;
 
-  /// todo: doc
+  /// The directory for user preference data.
   String get preference;
 
-  /// todo: doc
+  /// The directory for user-specific state data.
+  ///
+  /// This is data that should persist between (application) restarts, but that
+  /// is not important or portable enough to the user that it should be stored
+  /// in [data]. Some examples are actions history (recently used files, ...) or
+  /// current state of the application that can be reused on a restart (window
+  /// layout, open files, ...).
   String? get state;
 }
 
@@ -60,262 +74,31 @@ abstract class AppDirs {
     required this.baseDirs,
   });
 
-  /// todo: doc
+  /// The directory relative to which user-specific non-essential data files
+  /// should be stored.
   String get cache;
 
-  /// todo: doc
+  /// The directory for user-specific configuration files.
   String get config;
 
-  /// todo: doc
+  /// The directory for user-specific data files.
   String get data;
 
-  /// todo: doc
+  /// The directory for local, user-specific data files.
+  ///
+  /// On Windows, this will return a directory relative to `%LOCALAPPDATA%`
+  /// (vs. `%APPDATA%` for [data]).
   String get dataLocal;
 
-  /// todo: doc
+  /// The directory for user preference data.
   String get preference;
 
-  /// todo: doc
+  /// The directory for user-specific state data.
+  ///
+  /// This is data that should persist between (application) restarts, but that
+  /// is not important or portable enough to the user that it should be stored
+  /// in [data]. Some examples are actions history (recently used files, ...) or
+  /// current state of the application that can be reused on a restart (window
+  /// layout, open files, ...).
   String? get state;
 }
-
-// todo: for docs
-
-// class BaseDirectories {
-//   final Map<String, String> env;
-//   final OperatingSystem os;
-
-//   BaseDirectories(this.env, this.os);
-
-//   // home
-//   // Linux: $HOME
-//   // Windows: {FOLDERID_Profile} (USERPROFILE ?)
-//   // Mac: $HOME
-//   String get home {
-//     switch (os) {
-//       case OperatingSystem.unix:
-//         return env['HOME']!;
-//       case OperatingSystem.windows:
-//         return env['USERPROFILE']!;
-//       case OperatingSystem.mac:
-//         return env['HOME']!;
-//     }
-//   }
-
-//   // cache_dir
-//   // $XDG_CACHE_HOME or $HOME/.cache
-//   // {FOLDERID_LocalAppData}
-//   // $HOME/Library/Caches
-//   String get cache {
-//     switch (os) {
-//       case OperatingSystem.unix:
-//         return env['XDG_CACHE_HOME'] ?? p.join(home, '.cache');
-//       case OperatingSystem.windows:
-//         return env['LOCALAPPDATA']!;
-//       case OperatingSystem.mac:
-//         return p.join(home, 'Library', 'Caches');
-//     }
-//   }
-
-//   // config_dir
-//   // $XDG_CONFIG_HOME or $HOME/.config
-//   // {FOLDERID_RoamingAppData}
-//   // $HOME/Library/Application Support
-//   String get config {
-//     switch (os) {
-//       case OperatingSystem.unix:
-//         return env['XDG_CONFIG_HOME'] ?? p.join(home, '.config');
-//       case OperatingSystem.windows:
-//         return env['APPDATA']!;
-//       case OperatingSystem.mac:
-//         return p.join(home, 'Library', 'Application Support');
-//     }
-//   }
-
-//   // data_dir
-//   // $XDG_DATA_HOME or $HOME/.local/share
-//   // {FOLDERID_RoamingAppData}
-//   // $HOME/Library/Application Support
-//   String get data {
-//     switch (os) {
-//       case OperatingSystem.unix:
-//         return env['XDG_DATA_HOME'] ?? p.join(home, '.local', 'share');
-//       case OperatingSystem.windows:
-//         return env['APPDATA']!;
-//       case OperatingSystem.mac:
-//         return p.join(home, 'Library', 'Application Support');
-//     }
-//   }
-
-//   // data_local_dir
-//   // $XDG_DATA_HOME or $HOME/.local/share
-//   // {FOLDERID_LocalAppData}
-//   // $HOME/Library/Application Support
-//   String get dataLocal {
-//     switch (os) {
-//       case OperatingSystem.unix:
-//         return env['XDG_DATA_HOME'] ?? p.join(home, '.local', 'share');
-//       case OperatingSystem.windows:
-//         return env['LOCALAPPDATA']!;
-//       case OperatingSystem.mac:
-//         return p.join(home, 'Library', 'Application Support');
-//     }
-//   }
-
-//   // preference_dir
-//   // $XDG_CONFIG_HOME or $HOME/.config
-//   // {FOLDERID_RoamingAppData}
-//   // $HOME/Library/Preferences
-//   String get preference {
-//     switch (os) {
-//       case OperatingSystem.unix:
-//         return env['XDG_CONFIG_HOME'] ?? p.join(home, '.config');
-//       case OperatingSystem.windows:
-//         return env['APPDATA']!;
-//       case OperatingSystem.mac:
-//         return p.join(home, 'Library', 'Preferences');
-//     }
-//   }
-
-//   // state_dir
-//   // Some($XDG_STATE_HOME) or Some($HOME/.local/state)
-//   // None
-//   // None
-//   String? get state {
-//     switch (os) {
-//       case OperatingSystem.unix:
-//         return env['XDG_STATE_HOME'] ?? p.join(home, '.local', 'state');
-//       case OperatingSystem.windows:
-//         return null;
-//       case OperatingSystem.mac:
-//         return null;
-//     }
-//   }
-// }
-
-// class AppDirectories {
-//   final BaseDirectories base;
-//   final OperatingSystem os;
-//   final bool preferUnixConventions;
-
-//   final String? qualifier;
-//   final String? organization;
-//   final String application;
-
-//   late String _appPath;
-
-//   AppDirectories({
-//     required this.base,
-//     required this.os,
-//     this.preferUnixConventions = false,
-//     this.qualifier,
-//     this.organization,
-//     required this.application,
-//   }) {
-//     // org, Baz Corp, Foo Bar App
-//     //   unix: "foobar-app"
-//     //   windows: "Baz Corp/Foo Bar App"
-//     //   mac: "org.Baz-Corp.Foo-Bar-App"
-//     if (os == OperatingSystem.windows) {
-//       _appPath = application;
-//       if (organization != null) {
-//         _appPath = '$organization${p.separator}$_appPath';
-//       }
-//     } else if (os == OperatingSystem.unix || preferUnixConventions) {
-//       _appPath = application.toLowerCase().replaceAll(' ', '-');
-//     } else {
-//       _appPath = application;
-//       if (organization != null) {
-//         _appPath = '$organization.$_appPath';
-//       }
-//       if (qualifier != null) {
-//         _appPath = '$qualifier.$_appPath';
-//       }
-//       _appPath = _appPath.replaceAll(' ', '-');
-//     }
-//   }
-
-//   // cache_dir
-//   // $XDG_CACHE_HOME/<project_path> or $HOME/.cache/<project_path>
-//   // {FOLDERID_LocalAppData}/<project_path>/cache
-//   // $HOME/Library/Caches/<project_path>
-//   String get cache {
-//     if (os == OperatingSystem.windows) {
-//       return p.join(base.cache, _appPath, 'cache');
-//     } else if (os == OperatingSystem.unix || preferUnixConventions) {
-//       return p.join(base.cache, _appPath);
-//     } else {
-//       return p.join(base.cache, _appPath);
-//     }
-//   }
-
-//   // config_dir
-//   // $XDG_CONFIG_HOME/<project_path> or $HOME/.config/<project_path>
-//   // {FOLDERID_RoamingAppData}/<project_path>/config
-//   // $HOME/Library/Application Support/<project_path>
-//   String get config {
-//     if (os == OperatingSystem.windows) {
-//       return p.join(base.config, _appPath, 'config');
-//     } else if (os == OperatingSystem.unix || preferUnixConventions) {
-//       return p.join(base.config, _appPath);
-//     } else {
-//       return p.join(base.config, _appPath);
-//     }
-//   }
-
-//   // data_dir
-//   // $XDG_DATA_HOME/<project_path> or $HOME/.local/share/<project_path>
-//   // {FOLDERID_RoamingAppData}/<project_path>/data
-//   // $HOME/Library/Application Support/<project_path>
-//   String get data {
-//     if (os == OperatingSystem.windows) {
-//       return p.join(base.data, _appPath, 'data');
-//     } else if (os == OperatingSystem.unix || preferUnixConventions) {
-//       return p.join(base.data, _appPath);
-//     } else {
-//       return p.join(base.data, _appPath);
-//     }
-//   }
-
-//   // data_local_dir
-//   // $XDG_DATA_HOME/<project_path> or $HOME/.local/share/<project_path>
-//   // {FOLDERID_LocalAppData}/<project_path>/data
-//   // $HOME/Library/Application Support/<project_path>
-//   String get dataLocal {
-//     if (os == OperatingSystem.windows) {
-//       return p.join(base.dataLocal, _appPath, 'data');
-//     } else if (os == OperatingSystem.unix || preferUnixConventions) {
-//       return p.join(base.data, _appPath);
-//     } else {
-//       return p.join(base.data, _appPath);
-//     }
-//   }
-
-//   // preference_dir
-//   // $XDG_CONFIG_HOME/<project_path> or $HOME/.config/<project_path>
-//   // {FOLDERID_RoamingAppData}/<project_path>/config
-//   // $HOME/Library/Preferences/<project_path>
-//   String get preference {
-//     if (os == OperatingSystem.windows) {
-//       return p.join(base.preference, _appPath, 'config');
-//     } else if (os == OperatingSystem.unix || preferUnixConventions) {
-//       return p.join(base.preference, _appPath);
-//     } else {
-//       return p.join(base.preference, _appPath);
-//     }
-//   }
-
-//   // state_dir
-//   // Some($XDG_STATE_HOME/<project_path>) or $HOME/.local/state/<project_path>
-//   // None
-//   // None
-//   String? get state {
-//     if (os == OperatingSystem.windows) {
-//       return null;
-//     } else if (os == OperatingSystem.unix || preferUnixConventions) {
-//       return p.join(base.state!, _appPath);
-//     } else {
-//       return null;
-//     }
-//   }
-// }
