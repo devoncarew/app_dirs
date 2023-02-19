@@ -1,4 +1,4 @@
-name: directories
+name: app_dirs
 description: >-
   A library to locate common directories using platform-specific conventions.
 version: 0.1.0

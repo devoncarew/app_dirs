@@ -4,7 +4,7 @@
 
 @TestOn('mac-os')
 
-import 'package:directories/directories.dart';
+import 'package:app_dirs/app_dirs.dart';
 import 'package:test/test.dart';
 
 void main() {

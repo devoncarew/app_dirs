@@ -43,26 +43,26 @@ void generate(LibraryElement library, File destFile) {
   buf.writeln();
   var comment = library.documentationComment;
   if (comment != null) {
-    buf.writeln(stripDartdoc(comment));
+    buf.writeln(processMarkdown(stripDartdoc(comment)));
     buf.writeln();
   }
 
   var exportNamespace = library.exportNamespace;
+  var elements =
+      exportNamespace.definedNames.values.where((element) => isPublic(element));
 
-  var names = exportNamespace.definedNames.keys.toList()..sort();
-  for (var name in names) {
-    var element = exportNamespace.get(name);
+  for (var element in elements) {
+    if (element is! ExecutableElement) continue;
+    emitExecutableElement(element, buf);
+  }
+
+  for (var element in elements) {
     if (element is! ClassElement) continue;
-    if (!isPublic(element)) continue;
-
     emitInterfaceElement(element, buf);
   }
 
-  for (var name in names) {
-    var element = exportNamespace.get(name);
+  for (var element in elements) {
     if (element is! EnumElement) continue;
-    if (!isPublic(element)) continue;
-
     emitInterfaceElement(element, buf);
   }
 
@@ -85,7 +85,7 @@ void emitInterfaceElement(InterfaceElement element, StringBuffer buf) {
   buf.writeln();
   var comment = element.documentationComment;
   if (comment != null) {
-    buf.writeln(stripDartdoc(comment));
+    buf.writeln(processMarkdown(stripDartdoc(comment)));
     buf.writeln();
   }
 
@@ -105,7 +105,7 @@ void emitInterfaceElement(InterfaceElement element, StringBuffer buf) {
     buf.writeln();
     var comment = field.documentationComment;
     if (comment != null) {
-      buf.writeln(stripDartdoc(comment));
+      buf.writeln(processMarkdown(stripDartdoc(comment)));
       buf.writeln();
     }
   }
@@ -125,7 +125,7 @@ void emitInterfaceElement(InterfaceElement element, StringBuffer buf) {
     buf.writeln();
     var comment = ctor.documentationComment;
     if (comment != null) {
-      buf.writeln(stripDartdoc(comment));
+      buf.writeln(processMarkdown(stripDartdoc(comment)));
       buf.writeln();
     }
   }
@@ -150,7 +150,7 @@ void emitInterfaceElement(InterfaceElement element, StringBuffer buf) {
     buf.writeln();
     var comment = accessor.documentationComment;
     if (comment != null) {
-      buf.writeln(stripDartdoc(comment));
+      buf.writeln(processMarkdown(stripDartdoc(comment)));
       buf.writeln();
     }
   }
@@ -162,7 +162,6 @@ void emitInterfaceElement(InterfaceElement element, StringBuffer buf) {
     var typeDesc = method.returnType.getDisplayString(withNullability: true);
     var paramDesc = describeMethodParameters(method.parameters);
     var modifiers = method.isStatic ? 'static ' : '';
-    method.parameters;
     buf.writeln('### ${method.name}()');
     buf.writeln();
     buf.writeln('```dart');
@@ -172,9 +171,25 @@ void emitInterfaceElement(InterfaceElement element, StringBuffer buf) {
     buf.writeln();
     var comment = method.documentationComment;
     if (comment != null) {
-      buf.writeln(stripDartdoc(comment));
+      buf.writeln(processMarkdown(stripDartdoc(comment)));
       buf.writeln();
     }
+  }
+}
+
+void emitExecutableElement(ExecutableElement element, StringBuffer buf) {
+  var typeDesc = element.returnType.getDisplayString(withNullability: true);
+  var paramDesc = describeMethodParameters(element.parameters);
+  buf.writeln('## ${element.name}()');
+  buf.writeln();
+  buf.writeln('```dart');
+  buf.writeln(dartFormat('$typeDesc ${element.name}($paramDesc)', '{}'));
+  buf.writeln('```');
+  buf.writeln();
+  var comment = element.documentationComment;
+  if (comment != null) {
+    buf.writeln(processMarkdown(stripDartdoc(comment)));
+    buf.writeln();
   }
 }
 
@@ -246,4 +261,18 @@ $fragment$formattingSuffix
     source = source.substring(0, source.length - formattingSuffix.length);
   }
   return source.trim();
+}
+
+String processMarkdown(String markdown) {
+  final RegExp regexp = RegExp(r'(\[[\w\.]+\])');
+
+  return markdown.split('\n').map((line) {
+    for (var match in regexp.allMatches(line)) {
+      var ref = match.group(1)!;
+      ref = ref.substring(1, ref.length - 1);
+      line =
+          '${line.substring(0, match.start)}`$ref`${line.substring(match.end)}';
+    }
+    return line;
+  }).join('\n');
 }
