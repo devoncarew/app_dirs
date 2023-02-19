@@ -8,8 +8,8 @@
 ///
 /// ```
 /// var appDirs = Directories().appDirs(application: 'FooBar App');
-/// var cacheDir = appDirs.cache;
 /// var configDir = appDirs.config;
+/// ...
 /// ```
 
 import 'dart:io' as io;
@@ -66,7 +66,7 @@ class Directories {
   }
 
   /// The directory locations for the current platform's conventions. This
-  /// factors in information like the application and company name.
+  /// factors in information like the application and (optionally) company name.
   ///
   /// The [application], [qualifier] and [organization] information is used to
   /// construct the correct app path. For instance, in Unix that path might be

@@ -7,13 +7,8 @@ import 'dart:io' as io;
 /// The operating system to assume for directory conventions; passed as a param
 /// to [Directories].
 enum OperatingSystem {
-  /// Unix-like operating systems (like Linux).
   unix,
-
-  /// Windows.
   windows,
-
-  /// MacOS.
   mac;
 
   /// Return the correct [OperatingSystem] enum for the current platform.
