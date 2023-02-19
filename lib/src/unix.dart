@@ -1,3 +1,7 @@
+// Copyright (c) 2023, Devon Carew.  Please see the AUTHORS file for details.
+// All rights reserved. Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 import 'common.dart';
 
 class UnixBaseDirs extends BaseDirs {
@@ -35,7 +39,7 @@ class UnixBaseDirs extends BaseDirs {
   String get preference => env['XDG_CONFIG_HOME'] ?? '$home/.config';
 
   // state_dir
-  // Some($XDG_STATE_HOME) or Some($HOME/.local/state)
+  // $XDG_STATE_HOME or $HOME/.local/state
   @override
   String? get state => env['XDG_STATE_HOME'] ?? '$home/.local/state';
 }
