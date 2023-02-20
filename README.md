@@ -1,4 +1,6 @@
 [![package:app_dirs](https://github.com/devoncarew/app_dirs/actions/workflows/dart.yaml/badge.svg)](https://github.com/devoncarew/app_dirs/actions/workflows/dart.yaml)
+[![pub package](https://img.shields.io/pub/v/app_dirs.svg)](https://pub.dev/packages/app_dirs)
+[![package publisher](https://img.shields.io/pub/publisher/app_dirs.svg)](https://pub.dev/packages/app_dirs/publisher)
 
 A library to locate common directories using platform-specific conventions.
 

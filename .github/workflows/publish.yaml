@@ -12,3 +12,9 @@ jobs:
   publish:
     if: ${{ github.repository_owner == 'devoncarew' }}
     uses: dart-lang/ecosystem/.github/workflows/publish.yaml@main
+
+    # These permissions are required for authentication using OIDC and to enable
+    # us to create comments on PRs.
+    permissions:
+      id-token: write
+      pull-requests: write
