@@ -92,3 +92,8 @@ Specifications and documentation:
 Similar libraries for other platforms:
 - https://github.com/dirs-dev/directories-jvm
 - https://github.com/dirs-dev/directories-rs
+
+## Publishing automation
+
+For information about our publishing automation and release process, see
+https://github.com/dart-lang/ecosystem/wiki/Publishing-automation.
